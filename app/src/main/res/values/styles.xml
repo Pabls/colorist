@@ -2,7 +2,7 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/ebony_clay</item>
-        <item name="colorPrimaryDark">@color/mine_shaft</item>
+        <item name="colorPrimaryDark">@color/black_russian</item>
         <item name="colorAccent">@color/shamrock</item>
     </style>
 

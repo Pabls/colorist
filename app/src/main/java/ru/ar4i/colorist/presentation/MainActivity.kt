@@ -1,7 +1,8 @@
-package ru.ar4i.colorist
+package ru.ar4i.colorist.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import ru.ar4i.colorist.R
 
 class MainActivity : AppCompatActivity() {
 
