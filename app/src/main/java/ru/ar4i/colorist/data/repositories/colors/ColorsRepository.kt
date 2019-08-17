@@ -1,4 +1,4 @@
-package ru.ar4i.colorist.data.repositories
+package ru.ar4i.colorist.data.repositories.colors
 
 import android.content.Context
 import com.google.gson.Gson
@@ -18,29 +18,31 @@ class ColorsRepository(
     }
 
     override fun getColors(): List<Color> {
-        var jsonString: String? = null
-        try {
-            jsonString = context.assets
-                .open(ASSERT_PATH)
-                .bufferedReader()
-                .use {
-                    it.readText()
-                }
-        } finally {
-            return convertJsonToColors(jsonString)
-        }
+        var jsonString =
+            try {
+                context.assets
+                    .open(ASSERT_PATH)
+                    .bufferedReader()
+                    .use {
+                        it.readText()
+                    }
+            } catch (exception: Exception) {
+                null
+            }
+        return convertJsonToColors(jsonString)
     }
 
     private fun convertJsonToColors(jsonString: String?): List<Color> {
-        var colors = listOf<Color>()
-        try {
-            if (jsonString != null) {
+        return try {
+            if (!jsonString.isNullOrEmpty()) {
                 val responseType = object : TypeToken<ColorsResponse>() {}.type
                 val res = gson.fromJson<ColorsResponse>(jsonString, responseType)
-                colors = res.colors
+                res.colors
+            } else {
+                listOf()
             }
-        } finally {
-            return colors
+        } catch (exception: Exception) {
+            listOf()
         }
     }
 }

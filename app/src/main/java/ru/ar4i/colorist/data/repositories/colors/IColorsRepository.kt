@@ -1,4 +1,4 @@
-package ru.ar4i.colorist.data.repositories
+package ru.ar4i.colorist.data.repositories.colors
 
 import ru.ar4i.colorist.data.entities.Color
 

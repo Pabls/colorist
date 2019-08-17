@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Colorist</string>
+
+    <string name="nav_menu.color_lens">Colors</string>
+    <string name="nav_menu.camera">Camera</string>
+    <string name="nav_menu.colorize">Colorize</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

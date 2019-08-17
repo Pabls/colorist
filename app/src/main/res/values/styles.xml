@@ -1,9 +1,10 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/ebony_clay</item>
-        <item name="colorPrimaryDark">@color/black_russian</item>
-        <item name="colorAccent">@color/shamrock</item>
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+        <item name="colorPrimary">@color/bright_gray</item>
+        <item name="colorPrimaryDark">@color/mirage</item>
+        <item name="colorAccent">@color/comet</item>
+        <item name="homeAsUpIndicator">@drawable/ic_arrow_back</item>
     </style>
 
 </resources>

@@ -3,4 +3,14 @@
     <color name="ebony_clay">#232937</color>
     <color name="black_russian">#000011</color>
     <color name="shamrock">#26ca95</color>
+
+    <!--Primary-->
+    <color name="bright_gray">#333649</color>
+    <color name="comet">#585b6d</color>
+    <color name="light_bright_gray">#3d4255</color>
+    <color name="dark_bright_gray">#313447</color>
+    <color name="mirage">#171c2d</color>
+    <color name="white_lilac">#EBEEF7</color>
+    <color name="indian_khaki">#c2ab80</color>
+    <color name="waterloo">#7B7E90</color>
 </resources>

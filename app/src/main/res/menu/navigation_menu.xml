@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/action_color_lens"
+          android:title="@string/nav_menu.color_lens"
+          android:icon="@drawable/ic_color_lens"/>
+
+    <item android:id="@+id/action_camera"
+          android:title="@string/nav_menu.camera"
+          android:icon="@drawable/ic_camera"/>
+
+    <item android:id="@+id/action_colorize"
+          android:title="@string/nav_menu.colorize"
+          android:icon="@drawable/ic_colorize"/>
+
+</menu>
