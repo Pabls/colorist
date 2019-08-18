@@ -20,7 +20,7 @@
 
         <View android:id="@+id/v_color"
               android:layout_width="@dimen/match_constraint"
-              android:layout_height="80dp"
+              android:layout_height="40dp"
               android:layout_marginStart="@dimen/margin_16"
               android:layout_weight="1"
               android:layout_marginEnd="@dimen/margin_8"
@@ -37,7 +37,7 @@
                   tools:text="Orange"
                   android:gravity="center"
                   android:textColor="@color/white_lilac"
-                  android:textSize="@dimen/text_size_22"
+                  android:textSize="@dimen/text_size_14"
                   android:layout_marginTop="@dimen/margin_8"
                   android:layout_marginBottom="@dimen/margin_8"/>
 

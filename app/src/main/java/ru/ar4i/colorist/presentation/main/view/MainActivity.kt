@@ -1,13 +1,11 @@
 package ru.ar4i.colorist.presentation.main.view
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.koin.android.ext.android.inject
-import ru.ar4i.colorist.R
 import ru.ar4i.colorist.presentation.base.presenter.BasePresenter
 import ru.ar4i.colorist.presentation.base.view.BaseActivity
 import ru.ar4i.colorist.presentation.base.view.BaseFragment
@@ -17,6 +15,8 @@ import ru.ar4i.colorist.presentation.color_matching.view.ColorMatchingFragment
 import ru.ar4i.colorist.presentation.colors.adapter.ColorsAdapter
 import ru.ar4i.colorist.presentation.colors.view.ColorsFragment
 import ru.ar4i.colorist.presentation.main.presenter.MainPresenter
+import ru.ar4i.colorist.R
+
 
 class MainActivity : BaseActivity(), IMainView {
 
@@ -83,23 +83,39 @@ class MainActivity : BaseActivity(), IMainView {
         showFragment(CameraFragment.newInstance(), getString(R.string.nav_menu_camera))
     }
 
-    override fun showColorMatchingFragment() {
-        showFragment(ColorMatchingFragment.newInstance(), getString(R.string.nav_menu_color_lens))
+    override fun showColorMatchingFragment(lastSeekbarsState: Triple<Int, Int, Int>) {
+        showFragment(ColorMatchingFragment.newInstance(lastSeekbarsState), getString(R.string.nav_menu_colorize))
     }
 
     override fun getColorPosition(): Int? {
         val fragment = getFragment()
-        var position: Int? = if (checkColorsFragment(fragment)) {
+        return if (checkColorsFragment(fragment)) {
             (fragment as ColorsFragment).getPosition()
         } else {
             null
         }
-        return position
     }
+
+    override fun getLastSeekbarsState(): Triple<Int, Int, Int>? {
+        val fragment = getFragment()
+        return if (checkColorMatchingFragment(fragment)) {
+            (fragment as ColorMatchingFragment).getSeekbarsValue()
+        } else {
+            null
+        }
+    }
+
+    private fun checkColorMatchingFragment(fragment: Fragment?): Boolean = fragment != null && fragment is ColorMatchingFragment
 
     private fun checkColorsFragment(fragment: Fragment?): Boolean = fragment != null && fragment is ColorsFragment
 
-    private fun getFragment(): Fragment? = supportFragmentManager.fragments.first()
+    private fun getFragment(): Fragment? {
+        return if (!supportFragmentManager.fragments.isEmpty()) {
+            supportFragmentManager.fragments.first()
+        } else {
+            null
+        }
+    }
 
     private fun initBottomNavigationView() {
         vBottomNavigation = findViewById(R.id.nav_menu)
@@ -119,10 +135,14 @@ class MainActivity : BaseActivity(), IMainView {
     }
 
     private fun setFragment(fragment: BaseFragment?) {
-        if (fragment != null) {
+        if (fragment != null && !isFragmentEquals(fragment, getFragment())) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fl_container, fragment)
                 .commit()
         }
+    }
+
+    private fun isFragmentEquals(fragmentOne: Fragment?, fragmentTwo: Fragment?): Boolean {
+        return fragmentOne != null && fragmentTwo != null && fragmentOne.javaClass == fragmentTwo.javaClass
     }
 }

@@ -24,7 +24,7 @@ object AppModule {
 
     val repositoriesModule = module {
         single { ColorsRepository(get(), get()) } bind IColorsRepository::class
-        single { StateRepository(get()) } bind IStateRepository::class
+        single { StateRepository(get(), get()) } bind IStateRepository::class
     }
 
     val interactorsModule = module {

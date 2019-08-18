@@ -11,4 +11,13 @@ class StateInteractor(private val stateRepository: IStateRepository) : IStateInt
     override suspend fun getLastPosition(): Int {
         return stateRepository.getLastPosition()
     }
+
+    override suspend fun saveLastSeekbarsState(colors: Triple<Int, Int, Int>) {
+        stateRepository.saveLastSeekbarsState(colors)
+    }
+
+    override suspend fun getLastSeekbarsState(): Triple<Int, Int, Int> {
+        return stateRepository.getLastSeekbarsState()
+    }
+
 }
