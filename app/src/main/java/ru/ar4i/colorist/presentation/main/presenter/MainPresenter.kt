@@ -25,9 +25,9 @@ class MainPresenter(private val stateInteractor: IStateInteractor) : BasePresent
         getView()?.showColorsFragment(lastPosition)
     }
 
-    private fun trySaveLastSeekbarsState() = GlobalScope.launch(Dispatchers.Main){
+    private fun trySaveLastSeekbarsState() = GlobalScope.launch(Dispatchers.Main) {
         val lastSeekbarsState = getView()?.getLastSeekbarsState()
-        withContext(Dispatchers.IO) { saveLastSeekbarsState(lastSeekbarsState)}
+        withContext(Dispatchers.IO) { saveLastSeekbarsState(lastSeekbarsState) }
     }
 
     private fun savePositionAndShowCameraFragment() = GlobalScope.launch(Dispatchers.Main) {

@@ -4,6 +4,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.SeekBar
+import android.widget.TextView
+import androidx.constraintlayout.widget.Group
 import org.koin.android.ext.android.inject
 
 import ru.ar4i.colorist.R
@@ -39,6 +41,9 @@ class ColorMatchingFragment : BaseFragment(), IColorMatchingView {
     private lateinit var sbRed: SeekBar
     private lateinit var sbGreen: SeekBar
     private lateinit var sbBlue: SeekBar
+    private lateinit var tvColorName: TextView
+    private lateinit var tvHexValue: TextView
+    private lateinit var tvRgbValue: TextView
 
     private var seekBarState: Triple<Int, Int, Int>? = null
 
@@ -49,8 +54,12 @@ class ColorMatchingFragment : BaseFragment(), IColorMatchingView {
         } catch (exception: Exception) {
             exception.printStackTrace()
         }
-
         initView(view)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        onStopTrackingTouch()
     }
 
     override fun getLayoutId(): Int {
@@ -63,6 +72,18 @@ class ColorMatchingFragment : BaseFragment(), IColorMatchingView {
         } else {
             null
         }
+    }
+
+    override fun setColorName(name: String) {
+        tvColorName?.text = name
+    }
+
+    override fun setHexValue(hex: String) {
+        tvHexValue?.text = hex
+    }
+
+    override fun setRgbValue(rgb: String) {
+        tvRgbValue?.text = rgb
     }
 
     fun getSeekbarsValue(): Triple<Int, Int, Int> {
@@ -78,6 +99,9 @@ class ColorMatchingFragment : BaseFragment(), IColorMatchingView {
         sbRed = view.findViewById(R.id.sb_red)
         sbGreen = view.findViewById(R.id.sb_green)
         sbBlue = view.findViewById(R.id.sb_blue)
+        tvColorName = view.findViewById(R.id.tv_color_name)
+        tvHexValue = view.findViewById(R.id.tv_hex_value)
+        tvRgbValue = view.findViewById(R.id.tv_rgb_value)
         setListeners()
         setDefaultColor()
     }
@@ -104,7 +128,9 @@ class ColorMatchingFragment : BaseFragment(), IColorMatchingView {
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                onStopTrackingTouch()
+            }
         })
 
         sbGreen?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -113,7 +139,9 @@ class ColorMatchingFragment : BaseFragment(), IColorMatchingView {
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                onStopTrackingTouch()
+            }
         })
 
         sbBlue?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -122,15 +150,33 @@ class ColorMatchingFragment : BaseFragment(), IColorMatchingView {
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                onStopTrackingTouch()
+            }
         })
     }
 
+    private fun onStopTrackingTouch() {
+        val convertedValues = getConvertedValues(sbRed.progress, sbGreen.progress, sbBlue.progress)
+        val color = convertColorToHex(createColor(convertedValues.first, convertedValues.second, convertedValues.third))
+        presenter?.searchColorByHexValue(color, convertedValues)
+    }
+
+    private fun getConvertedValues(
+        redSeekBarValue: Int,
+        greenSeekBarValue: Int,
+        blueSeekBarValue: Int
+    ): Triple<Int, Int, Int> {
+        return Triple(
+            convertSeekBarValueToColor(redSeekBarValue),
+            convertSeekBarValueToColor(greenSeekBarValue),
+            convertSeekBarValueToColor(blueSeekBarValue)
+        )
+    }
+
     private fun getColor(redSeekBarValue: Int, greenSeekBarValue: Int, blueSeekBarValue: Int): Int {
-        val red = convertSeekBarValueToColor(redSeekBarValue)
-        val green = convertSeekBarValueToColor(greenSeekBarValue)
-        val blue = convertSeekBarValueToColor(blueSeekBarValue)
-        return createColor(red, green, blue)
+        val convertedValues = getConvertedValues(redSeekBarValue, greenSeekBarValue, blueSeekBarValue)
+        return createColor(convertedValues.first, convertedValues.second, convertedValues.third)
     }
 
     private fun convertSeekBarValueToColor(value: Int): Int {
@@ -144,5 +190,9 @@ class ColorMatchingFragment : BaseFragment(), IColorMatchingView {
 
     private fun changeSelectedColorView(color: Int) {
         vSelectedColor?.setBackgroundColor(color)
+    }
+
+    private fun convertColorToHex(color: Int): String {
+        return "#" + String.format("%06X", 0xFFFFFF and color).toLowerCase()
     }
 }
