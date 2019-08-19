@@ -89,7 +89,7 @@ class MainActivity : BaseActivity(), IMainView {
 
     override fun getColorPosition(): Int? {
         val fragment = getFragment()
-        return if (checkColorsFragment(fragment)) {
+        return if (checkFragmentType(fragment, ColorsFragment::class.java)) {
             (fragment as ColorsFragment).getPosition()
         } else {
             null
@@ -98,17 +98,15 @@ class MainActivity : BaseActivity(), IMainView {
 
     override fun getLastSeekbarsState(): Triple<Int, Int, Int>? {
         val fragment = getFragment()
-        return if (checkColorMatchingFragment(fragment)) {
+        return if (checkFragmentType(fragment, ColorMatchingFragment::class.java)) {
             (fragment as ColorMatchingFragment).getSeekbarsValue()
         } else {
             null
         }
     }
 
-    private fun checkColorMatchingFragment(fragment: Fragment?): Boolean = fragment != null && fragment is ColorMatchingFragment
-
-    private fun checkColorsFragment(fragment: Fragment?): Boolean = fragment != null && fragment is ColorsFragment
-
+    private fun <T> checkFragmentType(fragment: Fragment?, clazz: Class<T>): Boolean = fragment != null && clazz.isInstance(fragment)
+    
     private fun getFragment(): Fragment? {
         return if (!supportFragmentManager.fragments.isEmpty()) {
             supportFragmentManager.fragments.first()
